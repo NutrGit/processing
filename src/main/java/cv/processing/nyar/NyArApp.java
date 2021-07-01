@@ -2,6 +2,7 @@ package cv.processing.nyar;
 
 import jp.nyatla.nyar4psg.MultiMarker;
 import jp.nyatla.nyar4psg.NyAR4PsgConfig;
+import jp.nyatla.nyartoolkit.markersystem.NyARMarkerSystem;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
@@ -28,25 +29,18 @@ public class NyArApp extends PApplet {
      */
 
 
-    //Capture cam;
-    MultiMarker nya_l;
+    private MultiMarker nya_l;
+    private ArrayList<PImage> images = new ArrayList();
+    private NyARMarkerSystem markerSystem;
 
-    float rotX = 0;
+    private float rotX = 0;
+    private float a = 7;
+    private float c = 0.1f;
 
-    float a = 7;
-
-    ArrayList<PImage> images = new ArrayList();
-    int n = 0;
-    float c = 0.1f;
-
-//    File resourcesDirectory = new File("src/main/resources/data");
+    private int n = 0;
 
     @Override
     public void setup() {
-
-
-        //size(640, 512, P3D);
-
         String s = "src\\main\\resources\\data\\1";
         File folderName = new File(s);
         println(folderName.getAbsolutePath());
@@ -58,18 +52,18 @@ public class NyArApp extends PApplet {
             images.add(img);
         }
 
-        //font=createFont("FFScala", 32);
         colorMode(RGB, 100);
         println(MultiMarker.VERSION);
 
-        //キャプチャを作成
-        //cam=new Capture(this,640,480);
         File fileMaker = new File("src\\main\\resources\\data\\camera_para.dat");
+
         nya_l = new MultiMarker(this, width, height, fileMaker.getAbsolutePath(),
                 new NyAR4PsgConfig(NyAR4PsgConfig.CS_LEFT_HAND, NyAR4PsgConfig.TM_NYARTK));
-        //nya_l.addARMarker("../../data/patt.hiro", 80);
+
         nya_l.addNyIdMarker(0, 80);
-        println(images.size());
+        markerSystem = nya_l.get_ms();
+
+        frameRate(9999);
     }
 
     void drawgrid() {
@@ -101,7 +95,6 @@ public class NyArApp extends PApplet {
             }
         }
 
-        //nya_r.detect(pic);
         compute();
     }
 
@@ -124,17 +117,17 @@ public class NyArApp extends PApplet {
 //            box(40);
             nya_l.endTransform();
 
+            fill(150, 0, 150);
             PVector[] pVectors = nya_l.getMarkerVertex2D(i);
             for (PVector vector : pVectors) {
                 circle(vector.x, vector.y, 10);
             }
-
         }
     }
 
     @Override
     public void keyPressed(KeyEvent event) {
-        println(event.getKeyCode());
+//        println(event.getKeyCode());
         if (event.getKeyCode() == 37) {
             rotX++;
             println("rotX = " + rotX);
@@ -144,6 +137,14 @@ public class NyArApp extends PApplet {
         } else if (event.getKeyCode() == 10) {
             //enter
             System.out.println();
+
+            PVector[] pVectors = nya_l.getMarkerVertex2D(0);
+            for (PVector vector : pVectors) {
+                System.out.println("vector.x = " + vector.x + " vector.y = " + vector.y);
+            }
+
+
+
         } else if (event.getKeyCode() == 44 && n > 0) {
             //drawBox(images.get(n));
             n--;
