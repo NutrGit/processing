@@ -90,4 +90,8 @@ public abstract class NyARPsgBaseClass {
         var1[11] = 0.0D;
         var1[15] = 1.0D;
     }
+
+    public PMatrix3D get_lh_mat() {
+        return this._lh_mat;
+    }
 }

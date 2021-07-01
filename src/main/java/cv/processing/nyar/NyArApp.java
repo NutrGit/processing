@@ -3,9 +3,7 @@ package cv.processing.nyar;
 import jp.nyatla.nyar4psg.MultiMarker;
 import jp.nyatla.nyar4psg.NyAR4PsgConfig;
 import jp.nyatla.nyartoolkit.markersystem.NyARMarkerSystem;
-import processing.core.PApplet;
-import processing.core.PImage;
-import processing.core.PVector;
+import processing.core.*;
 import processing.event.KeyEvent;
 
 import java.io.File;
@@ -32,6 +30,8 @@ public class NyArApp extends PApplet {
     private MultiMarker nya_l;
     private ArrayList<PImage> images = new ArrayList();
     private NyARMarkerSystem markerSystem;
+    private PMatrix3D matrix3D = new PMatrix3D();
+    private PShape rocket;
 
     private float rotX = 0;
     private float a = 7;
@@ -41,6 +41,9 @@ public class NyArApp extends PApplet {
 
     @Override
     public void setup() {
+
+        rocket = loadShape(new File("src\\main\\resources\\shapes\\rocket\\rocket.obj").getAbsolutePath());
+
         String s = "src\\main\\resources\\data\\1";
         File folderName = new File(s);
         println(folderName.getAbsolutePath());
@@ -84,8 +87,47 @@ public class NyArApp extends PApplet {
         popMatrix();
     }
 
+    void extractData() {
+        float[] floats = new float[3];
+
+        matrix3D = nya_l.getMatrix(0);
+//        matrix3D = nya_l.get_lh_mat();
+        euler(matrix3D, floats);
+
+        pushMatrix();
+        translate(width / 2, height / 2, 0);
+        scale(2);
+        rotateX(floats[0]);
+        rotateY(floats[1]);
+        rotateZ(floats[2]);
+
+        strokeWeight(9);
+
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+        line(0, 0, 0, 100, 0, 0);
+        //textFont(font, 20.0);
+        text("X", 100, 0, 0);
+
+        fill(0, 255, 0);
+        stroke(0, 255, 0);
+        line(0, 0, 0, 0, 100, 0);
+        //textFont(font, 20.0);
+        text("Y", 0, 100, 0);
+
+        fill(0, 0, 255);
+        stroke(0, 0, 255);
+        line(0, 0, 0, 0, 0, 100);
+        //textFont(font, 20.0);
+        text("Z", 0, 0, 100);
+        popMatrix();
+    }
+
     @Override
     public void draw() {
+
+//        directionalLight(255, 255, 255, 0, 0.6f, -0.8f);
+
         c += 0.01;
         surface.setTitle("" + frameRate);
 
@@ -98,6 +140,8 @@ public class NyArApp extends PApplet {
         }
 
         compute();
+        extractData();
+
     }
 
     private void compute() {
@@ -118,6 +162,7 @@ public class NyArApp extends PApplet {
 //            rotate(c);
 //            translate(0, 0, 20);
 //            box(40);
+            drawRocket();
             nya_l.endTransform();
 
             fill(150, 0, 150);
@@ -126,6 +171,15 @@ public class NyArApp extends PApplet {
                 circle(vector.x, vector.y, 10);
             }
         }
+    }
+
+    private void drawRocket() {
+        pushMatrix();
+        scale(0.4f);
+        translate(0, 0, 20);
+        rotateX(PI / 2);
+        shape(rocket);
+        popMatrix();
     }
 
     @Override
@@ -146,6 +200,9 @@ public class NyArApp extends PApplet {
                 System.out.println("vector.x = " + vector.x + " vector.y = " + vector.y);
             }
 
+            System.out.println("nya_l.getMatrix(0) = " + nya_l.getMatrix(0));
+            System.out.println("nya_l.get_lh_mat() = " + nya_l.getMatrix(0));
+
 
         } else if (event.getKeyCode() == 44 && n > 0) {
             //drawBox(images.get(n));
@@ -154,6 +211,14 @@ public class NyArApp extends PApplet {
             //drawBox(images.get(n));
             n++;
         }
+    }
+
+    private float[] euler(PMatrix3D m, float[] out) {
+        // y-axis is inverted in Processing.
+        out[0] = atan2(-m.m12, m.m22);
+        out[1] = atan2(m.m02, sqrt(pow(m.m12, 2.0f) + pow(m.m22, 2.0f)));
+        out[2] = atan2(-m.m01, m.m00);
+        return out;
     }
 
     @Override

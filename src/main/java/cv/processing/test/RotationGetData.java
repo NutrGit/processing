@@ -5,9 +5,12 @@ import processing.core.PMatrix3D;
 import processing.core.PShape;
 import processing.event.KeyEvent;
 
+import java.io.File;
+
 public class RotationGetData extends PApplet {
     private PMatrix3D originalMatrix = new PMatrix3D();
     private PMatrix3D extractedMatrix = new PMatrix3D();
+    private PShape rocket;
 
     private PShape originalShape;
     private PShape extractedShape;
@@ -19,12 +22,15 @@ public class RotationGetData extends PApplet {
 
     @Override
     public void setup() {
+        rocket = loadShape(new File("src\\main\\resources\\shapes\\rocket\\rocket.obj").getAbsolutePath());
         calculate(2, 3);
     }
 
     @Override
     public void draw() {
         background(0xffffffff);
+
+
         ortho();
         directionalLight(255, 255, 255, 0, 0.6f, -0.8f);
         //calculate();
@@ -35,8 +41,17 @@ public class RotationGetData extends PApplet {
             surface.setTitle("x = " + (float) mouseX / 100);
         }
         drawgrid();
+
         shape(originalShape);
         shape(extractedShape);
+
+        pushMatrix();
+        rocket.applyMatrix(originalMatrix);
+        translate(width / 2, height / 2 + 100, -200);
+//        rotateZ(PI);
+        shape(rocket);
+        popMatrix();
+
     }
 
     private float[] euler(PMatrix3D m) {
@@ -89,6 +104,8 @@ public class RotationGetData extends PApplet {
         extractedShape.scale(64);
         extractedShape.translate(width * 0.75f, height * 0.5f);
 
+//        rocket.applyMatrix(extractedMatrix);
+
 
     }
 
@@ -100,6 +117,7 @@ public class RotationGetData extends PApplet {
         pushMatrix();
         translate(width / 2, height / 2, 0);
         scale(2);
+
         rotateX(floats[0]);
         rotateY(floats[1]);
         rotateZ(floats[2]);
