@@ -110,12 +110,13 @@ public class NyArApp extends PApplet {
             if ((!nya_l.isExist(i))) {
                 continue;
             }
+
             nya_l.beginTransform(i);
             fill(0, 255, 0);
             drawgrid();
-            fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
-            rotate(c);
-            translate(0, 0, 20);
+//            fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
+//            rotate(c);
+//            translate(0, 0, 20);
 //            box(40);
             nya_l.endTransform();
 
