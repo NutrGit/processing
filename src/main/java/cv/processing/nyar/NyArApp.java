@@ -32,6 +32,7 @@ public class NyArApp extends PApplet {
     private NyARMarkerSystem markerSystem;
     private PMatrix3D matrix3D = new PMatrix3D();
     private PShape rocket;
+    private PShape hippo;
 
     private float rotX = 0;
     private float a = 7;
@@ -42,7 +43,11 @@ public class NyArApp extends PApplet {
     @Override
     public void setup() {
 
+        noStroke();
+
         rocket = loadShape(new File("src\\main\\resources\\shapes\\rocket\\rocket.obj").getAbsolutePath());
+//        hippo = loadShape(new File("src\\main\\resources\\shapes\\hippo\\Hippo_OBJ.obj").getAbsolutePath());
+        hippo = loadShape(new File("src\\main\\resources\\shapes\\hippo\\hippo2.obj").getAbsolutePath());
 
         String s = "src\\main\\resources\\data\\1";
         File folderName = new File(s);
@@ -101,33 +106,34 @@ public class NyArApp extends PApplet {
         rotateY(floats[1]);
         rotateZ(floats[2]);
 
-        strokeWeight(9);
 
-        fill(255, 0, 0);
-        stroke(255, 0, 0);
-        line(0, 0, 0, 100, 0, 0);
-        //textFont(font, 20.0);
-        text("X", 100, 0, 0);
-
-        fill(0, 255, 0);
-        stroke(0, 255, 0);
-        line(0, 0, 0, 0, 100, 0);
-        //textFont(font, 20.0);
-        text("Y", 0, 100, 0);
-
-        fill(0, 0, 255);
-        stroke(0, 0, 255);
-        line(0, 0, 0, 0, 0, 100);
-        //textFont(font, 20.0);
-        text("Z", 0, 0, 100);
+//        strokeWeight(9);
+//
+//        fill(255, 0, 0);
+//        stroke(255, 0, 0);
+//        line(0, 0, 0, 100, 0, 0);
+//        //textFont(font, 20.0);
+//        text("X", 100, 0, 0);
+//
+//        fill(0, 255, 0);
+//        stroke(0, 255, 0);
+//        line(0, 0, 0, 0, 100, 0);
+//        //textFont(font, 20.0);
+//        text("Y", 0, 100, 0);
+//
+//        fill(0, 0, 255);
+//        stroke(0, 0, 255);
+//        line(0, 0, 0, 0, 0, 100);
+//        //textFont(font, 20.0);
+//        text("Z", 0, 0, 100);
         popMatrix();
     }
 
     @Override
     public void draw() {
 
-//        directionalLight(255, 255, 255, 0, 0.6f, -0.8f);
-
+        directionalLight(255, 255, 255, 0, 0.6f, -0.8f);
+        directionalLight(255, 255, 255, 20, -0.1f, -0.1f);
         c += 0.01;
         surface.setTitle("" + frameRate);
 
@@ -156,8 +162,8 @@ public class NyArApp extends PApplet {
             }
 
             nya_l.beginTransform(i);
-            fill(0, 255, 0);
-            drawgrid();
+            fill(255, 255, 255);
+//            drawgrid();
 //            fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
 //            rotate(c);
 //            translate(0, 0, 20);
@@ -165,20 +171,22 @@ public class NyArApp extends PApplet {
             drawRocket();
             nya_l.endTransform();
 
-            fill(150, 0, 150);
-            PVector[] pVectors = nya_l.getMarkerVertex2D(i);
-            for (PVector vector : pVectors) {
-                circle(vector.x, vector.y, 10);
-            }
+//            fill(150, 0, 150);
+//            PVector[] pVectors = nya_l.getMarkerVertex2D(i);
+//            for (PVector vector : pVectors) {
+//                circle(vector.x, vector.y, 10);
+//            }
         }
     }
 
     private void drawRocket() {
         pushMatrix();
-        scale(0.4f);
-        translate(0, 0, 20);
+        scale(9f);
+        translate(0, 0, 0);
+        rect(-10, -10, 20, 20);
         rotateX(PI / 2);
-        shape(rocket);
+//        shape(rocket);
+        shape(hippo);
         popMatrix();
     }
 
