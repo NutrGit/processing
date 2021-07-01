@@ -3,10 +3,9 @@ package cv.processing.nyar;
 import jp.nyatla.nyar4psg.MultiMarker;
 import jp.nyatla.nyar4psg.NyAR4PsgConfig;
 import processing.core.PApplet;
-import processing.core.PFont;
 import processing.core.PImage;
+import processing.core.PVector;
 import processing.event.KeyEvent;
-import processing.event.MouseEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,25 +30,10 @@ public class NyArApp extends PApplet {
 
     //Capture cam;
     MultiMarker nya_l;
-    PFont font;
 
     float rotX = 0;
 
-    float shiftX;
-    float shiftY;
-    float shiftZ;
-    float xScene, yScene;
-
-    float w;
-    float h;
-
     float a = 7;
-    int zval = -50;
-    float scaleVal = 1;
-    float fov;
-    boolean isMovingMode;
-
-    float fovVal = 3;
 
     ArrayList<PImage> images = new ArrayList();
     int n = 0;
@@ -109,8 +93,6 @@ public class NyArApp extends PApplet {
         c += 0.01;
         surface.setTitle("" + frameRate);
 
-        checkWindowResised();
-
         if (keyPressed) {
             if (keyCode == LEFT) {
                 a += 0.05;
@@ -120,10 +102,11 @@ public class NyArApp extends PApplet {
         }
 
         //nya_r.detect(pic);
+        compute();
+    }
+
+    private void compute() {
         PImage pic1 = images.get(n);
-        if (pic1 == null) {
-            println("null");
-        }
         nya_l.detect(pic1);
         background(0);
         nya_l.drawBackground(images.get(n));//frustumを考慮した背景描画
@@ -135,12 +118,17 @@ public class NyArApp extends PApplet {
             nya_l.beginTransform(i);
             fill(0, 255, 0);
             drawgrid();
-            fill(100 * (((i + 1) / 4) % 2), 100 * (((i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
+            fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
             rotate(c);
             translate(0, 0, 20);
-
-            box(40);
+//            box(40);
             nya_l.endTransform();
+
+            PVector[] pVectors = nya_l.getMarkerVertex2D(i);
+            for (PVector vector : pVectors) {
+                circle(vector.x, vector.y, 10);
+            }
+
         }
     }
 
@@ -154,6 +142,8 @@ public class NyArApp extends PApplet {
             rotX--;
             println("rotX = " + rotX);
         } else if (event.getKeyCode() == 10) {
+            //enter
+            System.out.println();
         } else if (event.getKeyCode() == 44 && n > 0) {
             //drawBox(images.get(n));
             n--;
@@ -161,73 +151,6 @@ public class NyArApp extends PApplet {
             //drawBox(images.get(n));
             n++;
         }
-    }
-
-    private void drawBox(PImage pic) {
-        nya_l.detect(pic);
-        background(0);
-        nya_l.drawBackground(pic);//frustumを考慮した背景描画
-
-        for (int i = 0; i < 1; i++) {
-            if ((!nya_l.isExist(i))) {
-                continue;
-            }
-            nya_l.beginTransform(i);
-            fill(0, 255, 0);
-            drawgrid();
-            fill(100 * (((i + 1) / 4) % 2), 100 * (((i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
-            translate(0, 0, 20);
-            box(40);
-            nya_l.endTransform();
-        }
-    }
-
-    private void checkWindowResised() {
-        if (w != width && h != height) {
-            w = width;
-            h = height;
-
-            xScene = w / 2;
-            yScene = h / 2;
-
-            println("resised " + w + " " + h);
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent event) {
-        if (event.getX() >= xScene - 40 && event.getX() <= xScene + 40 &&
-                event.getY() >= yScene - 40 && event.getY() <= yScene + 40) {
-            isMovingMode = true;
-        }
-
-        println(fov);
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent event) {
-        isMovingMode = false;
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent event) {
-        if (isMovingMode) {
-            xScene = event.getX();
-            yScene = event.getY();
-        }
-    }
-
-    @Override
-    public void mouseWheel(MouseEvent event) {
-        float e = event.getCount();
-        if (e > 0) {
-            fovVal -= 0.1;
-            //scaleVal -= 1;
-        } else {
-            fovVal += 0.1;
-            //scaleVal += 1;
-        }
-        println("scaleVal = " + scaleVal);
     }
 
     @Override
