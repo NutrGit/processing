@@ -63,6 +63,8 @@ public class NyArApp extends PApplet {
         nya_l.addNyIdMarker(0, 80);
         markerSystem = nya_l.get_ms();
 
+        System.out.println("NyaAr PApplet = " + this);
+
         frameRate(9999);
     }
 
@@ -142,7 +144,6 @@ public class NyArApp extends PApplet {
             for (PVector vector : pVectors) {
                 System.out.println("vector.x = " + vector.x + " vector.y = " + vector.y);
             }
-
 
 
         } else if (event.getKeyCode() == 44 && n > 0) {
