@@ -43,7 +43,7 @@ public class NyArApp extends PApplet {
     @Override
     public void setup() {
 
-        noStroke();
+//        noStroke();
 
         rocket = loadShape(new File("src\\main\\resources\\shapes\\rocket\\rocket.obj").getAbsolutePath());
 //        hippo = loadShape(new File("src\\main\\resources\\shapes\\hippo\\Hippo_OBJ.obj").getAbsolutePath());
@@ -57,6 +57,7 @@ public class NyArApp extends PApplet {
             println("f.getAbsolutePath() = " +
                     f.getAbsolutePath());
             PImage img = loadImage(f.getAbsolutePath());
+//            img.resize(1024, 768);
             images.add(img);
         }
 
@@ -73,7 +74,7 @@ public class NyArApp extends PApplet {
 
         System.out.println("NyaAr PApplet = " + this);
 
-        frameRate(9999);
+        frameRate(1000);
     }
 
     void drawgrid() {
@@ -132,8 +133,8 @@ public class NyArApp extends PApplet {
     @Override
     public void draw() {
 
-        directionalLight(255, 255, 255, 0, 0.6f, -0.8f);
-        directionalLight(255, 255, 255, 20, -0.1f, -0.1f);
+//        directionalLight(255, 255, 255, 0, 0.6f, -0.8f);
+//        directionalLight(255, 255, 255, 20, -0.1f, -0.1f);
         c += 0.01;
         surface.setTitle("" + frameRate);
 
@@ -164,18 +165,18 @@ public class NyArApp extends PApplet {
             nya_l.beginTransform(i);
             fill(255, 255, 255);
 //            drawgrid();
-//            fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
+            fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
 //            rotate(c);
-//            translate(0, 0, 20);
-//            box(40);
-            drawRocket();
+            translate(0, 0, 20);
+            box(mouseX);
+//            drawRocket();
             nya_l.endTransform();
 
-//            fill(150, 0, 150);
-//            PVector[] pVectors = nya_l.getMarkerVertex2D(i);
-//            for (PVector vector : pVectors) {
-//                circle(vector.x, vector.y, 10);
-//            }
+            fill(150, 0, 150);
+            PVector[] pVectors = nya_l.getMarkerVertex2D(i);
+            for (PVector vector : pVectors) {
+                circle(vector.x, vector.y, 10);
+            }
         }
     }
 
@@ -232,6 +233,7 @@ public class NyArApp extends PApplet {
     @Override
     public void settings() {
         size(1280, 1024, P3D);
+//        size(1024, 768, P3D);
     }
 
     public static void main(String[] args) {
