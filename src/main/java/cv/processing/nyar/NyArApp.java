@@ -164,11 +164,14 @@ public class NyArApp extends PApplet {
 
             nya_l.beginTransform(i);
             fill(255, 255, 255);
+
+
 //            drawgrid();
             fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
 //            rotate(c);
-            translate(0, 0, 20);
-            box(mouseX);
+//            translate(0, 0, 20);
+//            box(40);
+            drawLines();
 //            drawRocket();
             nya_l.endTransform();
 
@@ -178,6 +181,16 @@ public class NyArApp extends PApplet {
                 circle(vector.x, vector.y, 10);
             }
         }
+    }
+
+    private void drawLines() {
+//        stroke(1);
+//        strokeWeight(2);
+//        for (int j = 0; j < 10; j++) {
+//            line(-100 + j * 10, -100, 100 + j * 10, 100);
+//        }
+        int size = 30;
+        rect(-size, -size, size * 2, size * 2);
     }
 
     private void drawRocket() {
