@@ -30,7 +30,7 @@ public class NyArApp extends PApplet {
     private MultiMarker nya_l;
     private ArrayList<PImage> images = new ArrayList();
     private NyARMarkerSystem markerSystem;
-    private PMatrix3D matrix3D = new PMatrix3D();
+    private static PMatrix3D matrix3D = new PMatrix3D();
     private PShape rocket;
     private PShape hippo;
 
@@ -109,25 +109,25 @@ public class NyArApp extends PApplet {
         rotateZ(floats[2]);
 
 
-//        strokeWeight(9);
-//
-//        fill(255, 0, 0);
-//        stroke(255, 0, 0);
-//        line(0, 0, 0, 100, 0, 0);
-//        //textFont(font, 20.0);
-//        text("X", 100, 0, 0);
-//
-//        fill(0, 255, 0);
-//        stroke(0, 255, 0);
-//        line(0, 0, 0, 0, 100, 0);
-//        //textFont(font, 20.0);
-//        text("Y", 0, 100, 0);
-//
-//        fill(0, 0, 255);
-//        stroke(0, 0, 255);
-//        line(0, 0, 0, 0, 0, 100);
-//        //textFont(font, 20.0);
-//        text("Z", 0, 0, 100);
+        strokeWeight(9);
+
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+        line(0, 0, 0, 100, 0, 0);
+        //textFont(font, 20.0);
+        text("X", 100, 0, 0);
+
+        fill(0, 255, 0);
+        stroke(0, 255, 0);
+        line(0, 0, 0, 0, 100, 0);
+        //textFont(font, 20.0);
+        text("Y", 0, 100, 0);
+
+        fill(0, 0, 255);
+        stroke(0, 0, 255);
+        line(0, 0, 0, 0, 0, 100);
+        //textFont(font, 20.0);
+        text("Z", 0, 0, 100);
         popMatrix();
     }
 
@@ -233,16 +233,23 @@ public class NyArApp extends PApplet {
         } else if (event.getKeyCode() == 46 && n < images.size() - 1) {
             //drawBox(images.get(n));
             n++;
+        } else if (event.getKeyCode() == 76) {
+            System.out.println(matrix3D);
         }
     }
 
-    private float[] euler(PMatrix3D m, float[] out) {
+    public float[] euler(PMatrix3D m, float[] out) {
         // y-axis is inverted in Processing.
         out[0] = atan2(-m.m12, m.m22);
         out[1] = atan2(m.m02, sqrt(pow(m.m12, 2.0f) + pow(m.m22, 2.0f)));
         out[2] = atan2(-m.m01, m.m00);
         return out;
     }
+
+    public static PMatrix3D getMatrix3D() {
+        return matrix3D;
+    }
+
 
     @Override
     public void settings() {

@@ -1,6 +1,8 @@
-package cv.processing.pointcloud;
+package cv.processing.nyar;
+
 
 import processing.core.PApplet;
+import processing.core.PMatrix3D;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import processing.opengl.PGL;
@@ -17,10 +19,13 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PointCloud extends PApplet {
+public class NyArStatic extends PApplet {
 
     PGL pgl;
     PShader sh;
+
+    private PMatrix3D matrix3D;
+    float[] floats;
 
     int vertLoc;
 
@@ -63,9 +68,7 @@ public class PointCloud extends PApplet {
     String resFolderName;
 
     boolean isOrtho;
-
     boolean isMovingMode;
-
     boolean isShowUI;
 
     float fov;
@@ -108,7 +111,7 @@ public class PointCloud extends PApplet {
 
     public void draw() {
         background(0);
-        surface.setTitle("" + frameRate);
+//        surface.setTitle("" + frameRate);
 //        surface.setTitle("" + fov);
         checkWindowResised();
 
@@ -136,12 +139,19 @@ public class PointCloud extends PApplet {
         translate(xScene, yScene, zval);
         scale(scaleVal, -1 * scaleVal, scaleVal);
 
-        rotate(a, 0.0f, 1.0f, 0.0f);
+        if (floats == null) {
+            rotate(a, 0.0f, 1.0f, 0.0f);
+        } else {
+//            rotateX(PI/2 - floats[0]);
+//            rotateY(-floats[1]);
+//            rotateZ(floats[2]);
+        }
 
         //increase FPS idoono why
         if (isShowUI) {
             drawPurpleBox();
-            drawGrid();
+//            drawGrid();
+//            drawFov();
         }
 
         pointCloudBuffer = getFloatBufferFromList();
@@ -172,6 +182,8 @@ public class PointCloud extends PApplet {
 
         sh.unbind();
         endPGL();
+
+
     }
 
     private void drawPurpleBox() {
@@ -289,17 +301,31 @@ public class PointCloud extends PApplet {
 
                 String[] pieces = split(line, ' ');
 
-                float xi = Float.parseFloat(pieces[0]) - shiftX;
-                float yi = Float.parseFloat(pieces[1]) - shiftY;
-                float zi = Float.parseFloat(pieces[2]) - shiftZ;
+//                float xi = Float.parseFloat(pieces[0]) - shiftX;
+//                float yi = Float.parseFloat(pieces[1]) - shiftY;
+//                float zi = Float.parseFloat(pieces[2]) - shiftZ;
+//
+//                if (xi != 0.0f && yi != 0.0f && zi != 0.0f) {
+//                    tmpFloatList.add(xi * 2 + xr);
+//                    tmpFloatList.add(yi * 2 + yr);
+//                    tmpFloatList.add((zi - 1) * 2 + zr);
+//                    i++;
+//                }
+//                j++;
+
+                float xi = Float.parseFloat(pieces[0]);
+                float yi = Float.parseFloat(pieces[1]);
+                float zi = Float.parseFloat(pieces[2]);
 
                 if (xi != 0.0f && yi != 0.0f && zi != 0.0f) {
-                    tmpFloatList.add(xi * 2 + xr);
-                    tmpFloatList.add(yi * 2 + yr);
-                    tmpFloatList.add((zi - 1) * 2 + zr);
+                    tmpFloatList.add(xi);
+                    tmpFloatList.add(yi);
+                    tmpFloatList.add(zi);
                     i++;
                 }
                 j++;
+
+
             }
             bufferedReader.close();
         } catch (IOException e) {
@@ -384,6 +410,12 @@ public class PointCloud extends PApplet {
         }
     }
 
+    private void drawFov() {
+        stroke(100, 100, 100);
+        strokeWeight(0.01f);
+        line(0, 0, 0, 1, 1, 1);
+    }
+
     private void setOrtho() {
         if (isOrtho) {
             isOrtho = false;
@@ -439,11 +471,152 @@ public class PointCloud extends PApplet {
         } else if (event.getKeyCode() == 70) {
             //'F'
             openFolder();
+        } else if (event.getKeyCode() == 75) {
+            //'K'
+            System.out.println("get matrix from NyArApp");
+            matrix3D = NyArApp.getMatrix3D();
+            matrix3D.print();
+            System.out.println(matrix3D);
+        } else if (event.getKeyCode() == 76) {
+            //'L'
+            System.out.println(matrix3D);
+//            floats = euler(matrix3D);
+//            getFloatBufferRotate(pointCloudBuffer);
+            FloatBuffer tmpBuffer = pointCloudList.get(0);
+            int tmpVertData = vertDataList.get(0);
+            vertDataList.add(tmpVertData);
+            pointCloudList.add(getFloatBufferRotate(tmpBuffer));
         }
 
         println("event.getKeyCode() = " + event.getKeyCode());
         vertData = vertDataList.get(frameNumber) * 3;
         println("frameNumber = " + frameNumber);
+    }
+
+    private float[] euler(PMatrix3D m) {
+        float[] out = new float[3];
+        out[0] = atan2(-m.m12, m.m22);
+        out[1] = atan2(m.m02, sqrt(pow(m.m12, 2.0f) + pow(m.m22, 2.0f)));
+        out[2] = atan2(-m.m01, m.m00);
+        return out;
+    }
+
+    private FloatBuffer getFloatBufferRotate(FloatBuffer srcBuffer) {
+        FloatBuffer resBuffer = null;
+        List<String> listPoints = new ArrayList<>();
+        List<Float> tmpFloatList = new ArrayList();
+
+        Float[] tmp = new Float[3];
+
+        float minX = 99999;
+        float minY = 99999;
+        float minZ = 99999;
+
+        for (int j = 0; j < vertDataList.get(0); j++) {
+            float x = srcBuffer.get(j * 3 + 0);
+            float y = srcBuffer.get(j * 3 + 1);
+            float z = srcBuffer.get(j * 3 + 2);
+
+            if (x < minX) {
+                minX = x;
+            }
+            if (y < minY) {
+                minY = y;
+            }
+            if (z < minZ) {
+                minZ = z;
+            }
+
+//            listPoints.add(x + " " + y + " " + z);
+//            tmpFloatList.add(x);
+//            tmpFloatList.add(y);
+//            tmpFloatList.add(z);
+
+            float[] newCoordFloats = getNewCoords(0, 1, 0, x, y, z);
+            listPoints.add(newCoordFloats[0] + " " + newCoordFloats[1] + " " + newCoordFloats[2]);
+            tmpFloatList.add(newCoordFloats[0]);
+            tmpFloatList.add(newCoordFloats[1]);
+            tmpFloatList.add(newCoordFloats[2]);
+
+        }
+        System.out.println(minX + "\t" + minY + "\t" + minZ);
+
+        Float[] tmpFloatArray;
+        tmpFloatArray = tmpFloatList.toArray(new Float[0]);
+
+        resBuffer = floatBufferFromArray(tmpFloatArray);
+
+//        String[] pointsArray = listPoints.toArray(new String[0]);
+//        saveStrings("res/" + millis() + (int) random(0, 10) + ".txt", pointsArray);
+        return resBuffer;
+    }
+
+    private float[] getNewCoords(float pitch, float yaw, float roll, float x, float y, float z) {
+        float cosa = (float) Math.cos(yaw);
+        float sina = (float) Math.sin(yaw);
+
+        float cosb = (float) Math.cos(pitch);
+        float sinb = (float) Math.sin(pitch);
+
+        float cosc = (float) Math.cos(roll);
+        float sinc = (float) Math.sin(roll);
+
+        float Axx = cosa * cosb;
+        float Axy = cosa * sinb * sinc - sina * cosc;
+        float Axz = cosa * sinb * cosc + sina * sinc;
+
+        float Ayx = sina * cosb;
+        float Ayy = sina * sinb * sinc + cosa * cosc;
+        float Ayz = sina * sinb * cosc - cosa * sinc;
+
+        float Azx = -sinb;
+        float Azy = cosb * sinc;
+        float Azz = cosb * cosc;
+
+        float px = x;
+        float py = y;
+        float pz = z;
+
+        float[] resFloat = new float[3];
+        resFloat[0] = Axx * px + Axy * py + Axz * pz;
+        resFloat[1] = Ayx * px + Ayy * py + Ayz * pz;
+        resFloat[2] = Azx * px + Azy * py + Azz * pz;
+
+        return resFloat;
+    }
+
+    private void extractData() {
+
+        float[] floats = euler(matrix3D);
+
+        pushMatrix();
+        translate(width / 2, height / 2, 0);
+        scale(2);
+        rotateX(floats[0]);
+        rotateY(floats[1]);
+        rotateZ(floats[2]);
+
+
+        strokeWeight(9);
+
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
+        line(0, 0, 0, 100, 0, 0);
+        //textFont(font, 20.0);
+        text("X", 100, 0, 0);
+
+        fill(0, 255, 0);
+        stroke(0, 255, 0);
+        line(0, 0, 0, 0, 100, 0);
+        //textFont(font, 20.0);
+        text("Y", 0, 100, 0);
+
+        fill(0, 0, 255);
+        stroke(0, 0, 255);
+        line(0, 0, 0, 0, 0, 100);
+        //textFont(font, 20.0);
+        text("Z", 0, 0, 100);
+        popMatrix();
     }
 
     private void showUI() {
@@ -533,8 +706,12 @@ public class PointCloud extends PApplet {
     }
 
     public static void main(String[] args) {
-        PointCloud pointCloud = new PointCloud();
-        pointCloud.main(pointCloud.getClass().getName());
+        NyArApp nyArApp = new NyArApp();
+        nyArApp.main(nyArApp.getClass().getName());
+
+        NyArStatic nyArStatic = new NyArStatic();
+        nyArStatic.main(nyArStatic.getClass().getName());
+
     }
 
     public void settings() {
