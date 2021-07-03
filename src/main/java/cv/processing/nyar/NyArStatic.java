@@ -139,13 +139,8 @@ public class NyArStatic extends PApplet {
         translate(xScene, yScene, zval);
         scale(scaleVal, -1 * scaleVal, scaleVal);
 
-        if (floats == null) {
-            rotate(a, 0.0f, 1.0f, 0.0f);
-        } else {
-//            rotateX(PI/2 - floats[0]);
-//            rotateY(-floats[1]);
-//            rotateZ(floats[2]);
-        }
+        rotate(a, 0.0f, 1.0f, 0.0f);
+
 
         //increase FPS idoono why
         if (isShowUI) {
@@ -480,8 +475,8 @@ public class NyArStatic extends PApplet {
         } else if (event.getKeyCode() == 76) {
             //'L'
             System.out.println(matrix3D);
-//            floats = euler(matrix3D);
-//            getFloatBufferRotate(pointCloudBuffer);
+            floats = euler(matrix3D);
+
             FloatBuffer tmpBuffer = pointCloudList.get(0);
             int tmpVertData = vertDataList.get(0);
             vertDataList.add(tmpVertData);
@@ -532,7 +527,8 @@ public class NyArStatic extends PApplet {
 //            tmpFloatList.add(y);
 //            tmpFloatList.add(z);
 
-            float[] newCoordFloats = getNewCoords(0, 1, 0, x, y, z);
+//            float[] newCoordFloats = getNewCoords(45, 0, 0, x, y, z);
+            float[] newCoordFloats = getNewCoords(floats[0], floats[1], floats[2], x, y, z);
             listPoints.add(newCoordFloats[0] + " " + newCoordFloats[1] + " " + newCoordFloats[2]);
             tmpFloatList.add(newCoordFloats[0]);
             tmpFloatList.add(newCoordFloats[1]);
@@ -552,6 +548,45 @@ public class NyArStatic extends PApplet {
     }
 
     private float[] getNewCoords(float pitch, float yaw, float roll, float x, float y, float z) {
+        float cosa = (float) Math.cos(yaw);
+        float sina = (float) Math.sin(yaw);
+
+        float cosb = (float) Math.cos(pitch);
+        float sinb = (float) Math.sin(pitch);
+
+        float cosc = (float) Math.cos(roll);
+        float sinc = (float) Math.sin(roll);
+
+        float Axx = cosa * cosb;
+        float Axy = cosa * sinb * sinc - sina * cosc;
+        float Axz = cosa * sinb * cosc + sina * sinc;
+
+        float Ayx = sina * cosb;
+        float Ayy = sina * sinb * sinc + cosa * cosc;
+        float Ayz = sina * sinb * cosc - cosa * sinc;
+
+        float Azx = -sinb;
+        float Azy = cosb * sinc;
+        float Azz = cosb * cosc;
+
+        float px = x;
+        float py = y;
+        float pz = z;
+
+        float[] resFloat = new float[3];
+        resFloat[0] = Axx * px + Axy * py + Axz * pz;
+        resFloat[1] = Ayx * px + Ayy * py + Ayz * pz;
+        resFloat[2] = Azx * px + Azy * py + Azz * pz;
+
+        return resFloat;
+    }
+
+    private float[] getNewCoordsFromRad(float pitch, float yaw, float roll, float x, float y, float z) {
+
+        pitch = degrees(pitch);
+        yaw = degrees(yaw);
+        roll = degrees(roll);
+
         float cosa = (float) Math.cos(yaw);
         float sina = (float) Math.sin(yaw);
 
