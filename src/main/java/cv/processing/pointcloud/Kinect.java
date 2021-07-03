@@ -287,8 +287,9 @@ Thomas Sanchez Lengeling.
 
         if (key == '5') {
             FrameBuffer fBuffer = new FrameBuffer(pointCloudBuffer);
-            fBuffer.setRunFile(true);
-            fBuffer.saveOBJFrame();
+//            fBuffer.setRunFile(true);
+//            fBuffer.saveOBJFrame();
+            fBuffer.saveTxtFrame();
             println("save 1 frame");
         }
 

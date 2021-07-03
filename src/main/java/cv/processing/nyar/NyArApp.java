@@ -49,7 +49,8 @@ public class NyArApp extends PApplet {
 //        hippo = loadShape(new File("src\\main\\resources\\shapes\\hippo\\Hippo_OBJ.obj").getAbsolutePath());
         hippo = loadShape(new File("src\\main\\resources\\shapes\\hippo\\hippo2.obj").getAbsolutePath());
 
-        String s = "src\\main\\resources\\data\\1";
+//        String s = "src\\main\\resources\\data\\1";
+        String s = "src\\main\\resources\\data\\2";
         File folderName = new File(s);
         println(folderName.getAbsolutePath());
         File[] fileNames = folderName.listFiles();
@@ -245,8 +246,8 @@ public class NyArApp extends PApplet {
 
     @Override
     public void settings() {
-        size(1280, 1024, P3D);
-//        size(1024, 768, P3D);
+//        size(1280, 1024, P3D);
+        size(1024, 768, P3D);
     }
 
     public static void main(String[] args) {

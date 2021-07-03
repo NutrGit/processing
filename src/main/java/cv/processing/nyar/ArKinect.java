@@ -1,11 +1,12 @@
 package cv.processing.nyar;
 
+import KinectPV2.KinectPV2;
+import jp.nyatla.nyar4psg.MultiMarker;
+import jp.nyatla.nyar4psg.NyAR4PsgConfig;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
-import jp.nyatla.nyar4psg.*;
-import KinectPV2.*;
 
 import java.io.File;
 
@@ -42,7 +43,7 @@ public class ArKinect extends PApplet {
         System.out.println("sketchPath() = " + sketchPath());
 //        nya = new MultiMarker(this, width, height, "../../data/camera_para.dat", NyAR4PsgConfig.CONFIG_PSG);
 
-        File file = new File(sketchPath() + "/res/data/camera_para.dat");
+        File file = new File(sketchPath() + "\\src\\main\\resources\\data\\camera_para.dat");
         System.out.println(file.getAbsolutePath());
 
         nya = new MultiMarker(this, width, height, file.getAbsolutePath(), NyAR4PsgConfig.CONFIG_PSG);
@@ -71,16 +72,16 @@ public class ArKinect extends PApplet {
                 continue;
             }
             nya.beginTransform(i);
-            fill(100 * (((i + 1) / 4) % 2), 100 * (((i + 1) / 2) % 2), 100 * (((i + 1)) % 2));
+            fill(100 * ((((float) i + 1) / 4) % 2), 100 * ((((float) i + 1) / 2) % 2), 100 * ((((float) i + 1)) % 2));
             translate(0, 0, 20);
-            box(40);
+//            box(40);
             nya.endTransform();
         }
 
-        stroke(255, 0, 0);
-        strokeWeight(1);
-        line(width / 2, 0, width / 2, height);
-        line(0, height / 2, width, height / 2);
+//        stroke(255, 0, 0);
+//        strokeWeight(1);
+//        line(width >> 1, 0, width >> 1, height);
+//        line(0, height >> 1, width, height >> 1);
     }
 
     @Override
@@ -103,7 +104,10 @@ public class ArKinect extends PApplet {
 
     @Override
     public void keyPressed(KeyEvent event) {
-        super.keyPressed(event);
+        if (event.getKeyCode() == 32) {
+            saveFrame("1.jpg");
+            System.out.println("save 1.jpg");
+        }
     }
 
     @Override
