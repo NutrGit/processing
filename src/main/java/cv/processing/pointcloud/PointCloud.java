@@ -75,6 +75,7 @@ public class PointCloud extends PApplet {
     public void setup() {
 
         sketchPath = sketchPath();
+//        resFolderName = "7_3_12_35_";
         resFolderName = "7_3_12_35_";
 
         println(sketchPath);
