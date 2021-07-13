@@ -1,11 +1,18 @@
 package cv.processing.pid.test;
 
+import cv.processing.pid.test.fx.App;
+import cv.processing.pid.test.fx.Controller;
+import javafx.fxml.FXMLLoader;
+import javafx.stage.Stage;
 import lejos.util.PIDController;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import shiffman.box2d.Box2DProcessing;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 // A reference to our box2d world
@@ -168,6 +175,5 @@ public class Box2dPid extends PApplet {
     public static void main(String[] args) {
         Box2dPid app = new Box2dPid();
         app.main(app.getClass().getName());
-
     }
 }

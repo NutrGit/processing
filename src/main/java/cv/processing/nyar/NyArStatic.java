@@ -111,7 +111,7 @@ public class NyArStatic extends PApplet {
 
     public void draw() {
         background(0);
-//        surface.setTitle("" + frameRate);
+        surface.setTitle("" + frameRate);
 //        surface.setTitle("" + fov);
         checkWindowResised();
 
@@ -150,6 +150,7 @@ public class NyArStatic extends PApplet {
         }
 
         pointCloudBuffer = getFloatBufferFromList();
+//        pointCloudBuffer = getFloatBufferRotate(getFloatBufferFromList());
 
         pgl = beginPGL();
         sh.bind();
@@ -527,15 +528,15 @@ public class NyArStatic extends PApplet {
 //            tmpFloatList.add(y);
 //            tmpFloatList.add(z);
 
-//            float[] newCoordFloats = getNewCoords(45, 0, 0, x, y, z);
-            float[] newCoordFloats = getNewCoords(floats[0], floats[1], floats[2], x, y, z);
+//            float[] newCoordFloats = getNewCoords((float) mouseX / 100, 0, 0, x, y, z);
+            float[] newCoordFloats = getNewCoordsFromRad(-floats[0], floats[1], -floats[2], x, y, z);
             listPoints.add(newCoordFloats[0] + " " + newCoordFloats[1] + " " + newCoordFloats[2]);
             tmpFloatList.add(newCoordFloats[0]);
             tmpFloatList.add(newCoordFloats[1]);
             tmpFloatList.add(newCoordFloats[2]);
 
         }
-        System.out.println(minX + "\t" + minY + "\t" + minZ);
+//        System.out.println(minX + "\t" + minY + "\t" + minZ);
 
         Float[] tmpFloatArray;
         tmpFloatArray = tmpFloatList.toArray(new Float[0]);
