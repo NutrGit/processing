@@ -1,4 +1,4 @@
-package cv.processing.test;
+package cv.processing.rotation;
 
 import processing.core.PApplet;
 import processing.core.PMatrix3D;

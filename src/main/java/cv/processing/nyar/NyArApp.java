@@ -11,22 +11,6 @@ import java.util.ArrayList;
 
 public class NyArApp extends PApplet {
 
-    /**
-     * NyARToolkit for proce55ing/3.0.5
-     * (c)2008-2017 nyatla
-     * airmail(at)ebony.plala.or.jp
-     * <p>
-     * ２つの座標系を同時に扱う例です。
-     * 人マーカの上に右手系、Hiroマーカの上に左手系の座標系を使って、立方体を表示します。
-     * 全ての設定ファイルとマーカファイルはスケッチディレクトリのlibraries/nyar4psg/dataにあります。
-     * <p>
-     * This sketch handles 2 coordinate system in same time.(left and right).
-     * Each markers show different coordinate system.
-     * The marker is "patt.hiro" and "patt.kanji"
-     * Any pattern and configuration files are found in libraries/nyar4psg/data inside your sketchbook folder.
-     */
-
-
     private MultiMarker nya_l;
     private ArrayList<PImage> images = new ArrayList();
     private NyARMarkerSystem markerSystem;

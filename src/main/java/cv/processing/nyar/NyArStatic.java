@@ -21,59 +21,60 @@ import java.util.List;
 
 public class NyArStatic extends PApplet {
 
-    PGL pgl;
-    PShader sh;
+    private PGL pgl;
+    private PShader sh;
 
     private PMatrix3D matrix3D;
-    float[] floats;
+    private float[] floats;
 
-    int vertLoc;
+    private int vertLoc;
 
     //VBO buffer location in the GPU
-    int vertexVboId;
+    private int vertexVboId;
 
     //transformations
-    float a = 7;
-    int zval = -50;
+    private float a = 7;
+    private int zval = -50;
     //float scaleVal = 220;
-    float scaleVal = 480;
+    private float scaleVal = 480;
 
     //int vertData = 512*424*3;
 //int vertData = 119756*3; //count of points*3 by frame
-    int vertData = 217088 * 3;
-    List<Integer> vertDataList = new ArrayList();
+    private int vertData = 217088 * 3;
+    private List<Integer> vertDataList = new ArrayList();
 
-    FloatBuffer pointCloudBuffer;
+    //main point cloud
+    private FloatBuffer pointCloudBuffer;
 
-    List<FloatBuffer> pointCloudList = new ArrayList();
-    int frameNumber = 0;
+    private List<FloatBuffer> pointCloudList = new ArrayList();
+    private int frameNumber = 0;
 
-    float xScene = width >> 1, yScene;
+    private float xScene = width >> 1, yScene;
 
-    String sketchPath;
+    private String sketchPath;
 
-    boolean pause;
-    float xCoordFrameBar;
-    float yCoordFrameBar;
-    float frameBarLength;
-    float frameCoordPosition;
-    float frameStep;
-    float shiftX;
-    float shiftY;
-    float shiftZ;
+    private boolean pause;
+    private float xCoordFrameBar;
+    private float yCoordFrameBar;
+    private float frameBarLength;
+    private float frameCoordPosition;
+    private float frameStep;
+    private float shiftX;
+    private float shiftY;
+    private float shiftZ;
 
-    float w;
-    float h;
+    private float w;
+    private float h;
 
-    String resFolderName;
+    private String resFolderName;
 
-    boolean isOrtho;
-    boolean isMovingMode;
-    boolean isShowUI;
+    private boolean isOrtho;
+    private boolean isMovingMode;
+    private boolean isShowUI;
 
-    float fov;
+    private float fov;
 
-    int k = 1;
+    private int k = 1;
 
     public void setup() {
 

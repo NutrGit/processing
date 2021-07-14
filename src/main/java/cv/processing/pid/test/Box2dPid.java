@@ -1,7 +1,5 @@
 package cv.processing.pid.test;
 
-import cv.processing.pid.test.fx.App;
-import cv.processing.pid.test.fx.Controller;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import lejos.util.PIDController;
@@ -59,10 +57,10 @@ public class Box2dPid extends PApplet {
             tempUp(boxes.get(0));
         }
 
-//        if (mousePressed) {
-//            Box p = new Box(mouseX, mouseY, this, random(0, 19));
-//            boxes.add(p);
-//        }
+        if (mousePressed) {
+            Box p = new Box(mouseX, mouseY, this, random(0, 19));
+            boxes.add(p);
+        }
 
 
         // Display all the boxes
@@ -110,11 +108,14 @@ public class Box2dPid extends PApplet {
     @Override
     public void setup() {
 
+        //lego pid controller
+        //not working as well
+        //D-part is not very sensitive
         pidController = new PIDController((int) temp);
 
         Kp = 1;
         Ki = 1;
-        Kd = 1;
+        Kd = 1; //not working as well
 
         pidController.setPIDParam(0, Kp); //P
         pidController.setPIDParam(1, Ki); //I

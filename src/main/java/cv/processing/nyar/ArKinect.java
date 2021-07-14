@@ -23,8 +23,8 @@ public class ArKinect extends PApplet {
     //800x600
     //1024x768
     //1200x900
-    int widthRes = 1024;
-    int heightRes = 768;
+    private int widthRes = 1024;
+    private int heightRes = 768;
 //    int widthRes = 512 * 2;
 //    int heightRes = 424 * 2;
 
