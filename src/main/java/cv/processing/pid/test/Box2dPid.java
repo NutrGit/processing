@@ -6,11 +6,7 @@ import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import shiffman.box2d.Box2DProcessing;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.List;
 
 // A reference to our box2d world
 
