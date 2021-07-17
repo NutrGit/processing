@@ -14,11 +14,13 @@ public class PController {
         this.t0 = t0;
     }
 
-    public float getY(float t1) {
-        e = t0 - t1;
+    public float getY(float t1, float kp) {
+        e = kp * (t0 - t1);
         y = t1 + e;
         return y;
     }
 
-
+    public float getE() {
+        return this.e;
+    }
 }

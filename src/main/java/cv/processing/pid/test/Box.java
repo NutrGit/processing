@@ -70,6 +70,8 @@ class Box {
 
     // Drawing the box
     void display() {
+
+
         // We look at each body and get its screen position
         Vec2 pos = box2d.getBodyPixelCoord(body);
         // Get its angle of rotation
@@ -80,7 +82,7 @@ class Box {
         app.translate(pos.x, pos.y);
         app.rotate(-a);
 //        app.fill(175);
-        app.fill(temp);
+        app.fill(temp, 0, 0);
 //        app.stroke(0);
         app.noStroke();
         app.rect(0, 0, w, h);

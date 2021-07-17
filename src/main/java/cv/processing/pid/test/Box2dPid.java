@@ -1,7 +1,7 @@
 package cv.processing.pid.test;
 
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
+import cv.processing.pid.test.fx.App;
+import cv.processing.pid.test.fx.Controller;
 import lejos.util.PIDController;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 
 // A reference to our box2d world
 
@@ -39,6 +40,8 @@ public class Box2dPid extends PApplet {
 
     @Override
     public void draw() {
+
+
         fill(255);
         rect(0, 0, width, height * 2);
         surface.setTitle("" + boxes.size() + " \t " + avgTemp);
@@ -54,6 +57,8 @@ public class Box2dPid extends PApplet {
         }
 
         if (boxes.size() > 0) {
+            fill(255);
+            rect(0, 0, 200, 400);
             tempUp(boxes.get(0));
         }
 
@@ -96,8 +101,10 @@ public class Box2dPid extends PApplet {
         x0 = j;
         y0 = height - temp;
 
+
         fill(0);
         text(frameRate, 20, 20);
+
     }
 
     @Override
@@ -107,15 +114,13 @@ public class Box2dPid extends PApplet {
 
     @Override
     public void setup() {
+        surface.setResizable(true);
 
-        //lego pid controller
-        //not working as well
-        //D-part is not very sensitive
         pidController = new PIDController((int) temp);
 
         Kp = 1;
         Ki = 1;
-        Kd = 1; //not working as well
+        Kd = 1;
 
         pidController.setPIDParam(0, Kp); //P
         pidController.setPIDParam(1, Ki); //I
@@ -156,7 +161,18 @@ public class Box2dPid extends PApplet {
 
     private void tempUp(Box box) {
         float t = box.getTemp();
-        t = pController.getY(t) + iController.getY(t);
+        float P = pController.getY(t, Kp);
+        float I = iController.getY(t, Ki);
+        t = P + I;
+        fill(0);
+        text("Ep = " + pController.getE(), 10, 40);
+        text("Ei = " + iController.getE(), 10, 60);
+
+        text("P = " + P, 10, 80);
+        text("I = " + I, 10, 100);
+
+        text("Kp = " + Kp, 10, 120);
+        text("Ki = " + Ki, 10, 140);
 //        t = pController.getY(t);
 //        t = pidController.doPID((int) t);
         box.setTemp(t);
@@ -170,11 +186,35 @@ public class Box2dPid extends PApplet {
 
     @Override
     public void keyPressed(KeyEvent event) {
-        boxes.remove(boxes.get(0));
+        if (event.getKey() == 'd') {
+            if (boxes.size() > 1) {
+                Box box = boxes.get(0);
+                box.killBody();
+                boxes.remove(boxes.get(0));
+            }
+        } else if (event.getKey() == 'u') {
+            for (int j = 0; j < 10; j++) {
+                boxes.add(new Box(random(0, 100), 0, this, 0));
+            }
+        } else if (event.getKey() == '9') {
+            Kp++;
+        } else if (event.getKey() == '0') {
+            Kp--;
+        } else if (event.getKey() == '7') {
+            Ki++;
+        } else if (event.getKey() == '8') {
+            Ki--;
+        }
+
+
     }
 
     public static void main(String[] args) {
         Box2dPid app = new Box2dPid();
         app.main(app.getClass().getName());
     }
+}
+
+class Log {
+
 }

@@ -16,13 +16,17 @@ public class IController {
         this.t0 = t0;
     }
 
-    public float getY(float t1) {
-        y = t1 + getESum(t0 - t1);
+    public float getY(float t1, float ki) {
+        y = t1 + getESum(t0 - t1, ki);
         return y;
     }
 
-    private float getESum(float e0) {
-        e += e0;
+    private float getESum(float e0, float ki) {
+        e += ki * e0;
         return e;
+    }
+
+    public float getE() {
+        return this.e;
     }
 }
