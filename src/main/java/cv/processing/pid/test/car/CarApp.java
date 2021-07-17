@@ -43,13 +43,22 @@ public class CarApp extends PApplet {
         j++;
         if (event.getKeyCode() == 37) {
             //LEFT
-            wheelAngle--;
+            wheelLeft(1f);
         } else if (event.getKeyCode() == 39) {
             //RIGHT
-            wheelAngle++;
+            wheelRight(1f);
         }
         surface.setTitle("" + wheelAngle);
     }
+
+    private void wheelRight(float y) {
+        wheelAngle += y;
+    }
+
+    private void wheelLeft(float y) {
+        wheelAngle -= y;
+    }
+
 
     @Override
     public void settings() {

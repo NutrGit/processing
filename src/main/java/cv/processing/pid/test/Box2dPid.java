@@ -1,7 +1,5 @@
 package cv.processing.pid.test;
 
-import cv.processing.pid.test.fx.App;
-import cv.processing.pid.test.fx.Controller;
 import lejos.util.PIDController;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
@@ -213,8 +211,4 @@ public class Box2dPid extends PApplet {
         Box2dPid app = new Box2dPid();
         app.main(app.getClass().getName());
     }
-}
-
-class Log {
-
 }
