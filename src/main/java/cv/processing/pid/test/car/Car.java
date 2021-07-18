@@ -10,6 +10,8 @@ import processing.core.PImage;
 
 import java.io.File;
 
+import static java.lang.Math.PI;
+
 
 public class Car {
 
@@ -18,6 +20,8 @@ public class Car {
     private Body body;
     private CarApp app;
     private PImage carImage;
+    private float pi2 = (float) (3 * PI / 2);
+    private Vec2 dirVec = new Vec2();
 
     public Car(float x, float y, CarApp app) {
         this.width = 60;
@@ -71,9 +75,15 @@ public class Car {
 //        app.noStroke();
         app.strokeWeight(2);
 //        app.rect(0, 0, width, height);
-        app.popMatrix();
 
-        app.line(pos.x, pos.y, 0, 0);
+        app.popMatrix();
+        dirVec.x = (float) (pos.x + 100 * Math.cos(pi2 - a));
+        dirVec.y = (float) (pos.y + 100 * Math.sin(pi2 - a));
+        app.line(pos.x, pos.y, dirVec.x, dirVec.y);
+    }
+
+    public Vec2 getDirVec(){
+        return dirVec;
     }
 
     void attract(float x, float y) {

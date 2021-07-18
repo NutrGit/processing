@@ -1,5 +1,6 @@
 package cv.processing.pid.test.car;
 
+import org.jbox2d.common.Vec2;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.event.KeyEvent;
@@ -43,7 +44,8 @@ public class CarApp extends PApplet {
 //        surface.setTitle("body angle = " + car.getBody().getAngle());
 
         info.updateText("wheel angle = " + wheelAngle +
-                "\n car angle = " + car.getBody().getAngle());
+                "\n car angle = " + car.getBody().getAngle() +
+                "\n angular velosity = " + car.getBody().getAngularVelocity());
         info.draw();
 
         car.display();
@@ -94,22 +96,37 @@ public class CarApp extends PApplet {
         } else if (event.getKeyCode() == 73) {
             //I
             info.toggleShowInfo();
-        } else if(event.getKeyCode() == 38){
+        } else if (event.getKeyCode() == 38) {
             //UP
-
+            moveForward(0);
+        } else if (event.getKeyCode() == 40) {
+            //DOWN
+            moveBackward(0);
         }
+
+
     }
 
     private void wheelRight(float y) {
         wheelAngle += y;
+        Vec2 carPos = car.getBody().getPosition();
+        float radians = radians(-wheelAngle);
+        car.getBody().setTransform(carPos, radians);
     }
 
     private void wheelLeft(float y) {
         wheelAngle -= y;
+        Vec2 carPos = car.getBody().getPosition();
+        float radians = radians(-wheelAngle);
+        car.getBody().setTransform(carPos, radians);
     }
 
-    private void moveForward(float y){
-//        car.attract();
+    private void moveForward(float y) {
+        car.attract(car.getDirVec().x, car.getDirVec().y);
+    }
+
+    private void moveBackward(float y) {
+        car.attract(-car.getDirVec().x, -car.getDirVec().y);
     }
 
     @Override
