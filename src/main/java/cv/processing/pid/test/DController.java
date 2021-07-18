@@ -1,37 +1,17 @@
 package cv.processing.pid.test;
 
-import processing.core.PApplet;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.function.DoubleFunction;
-
-public class DController extends PApplet {
+public class DController {
     private float y;
     private float e;
     private float t0;
     private static final double DX = 0.0001;
     private int j = 0;
-
-    public static void main(String[] args) {
-        DController app = new DController(200);
-        app.main(app.getClass().getName());
-    }
-
-    @Override
-    public void draw() {
-        j++;
-        float y0 = j * j * j;
-        fill(0);
-    }
-
-    @Override
-    public void settings() {
-        size(1024, 768);
-    }
-
-    @Override
-    public void setup() {
-        background(255);
-    }
+    private int dx;
+    private int x;
+    private List<Float> eList = new ArrayList<>();
 
     public DController(float t0) {
         this.e = 0;
@@ -40,11 +20,20 @@ public class DController extends PApplet {
     }
 
     public float getY(float t1, float kd) {
-        DoubleFunction<Double> res = derive((x) -> x * x);
+        e = t0 - t1;
+        eList.add(e);
+        if (eList.size() > 50) {
+            eList.remove(eList.get(0));
+        }
+        if (eList.size() == 50) {
+            y = (eList.get(49) - eList.get(1)) / 48;
+        }
         return y;
     }
 
-    private static DoubleFunction<Double> derive(DoubleFunction<Double> f) {
-        return (x) -> (f.apply(x + DX) - f.apply(x)) / DX;
+    public float getE(){
+        return e;
     }
+
+
 }

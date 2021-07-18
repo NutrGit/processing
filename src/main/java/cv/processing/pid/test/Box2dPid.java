@@ -18,8 +18,11 @@ public class Box2dPid extends PApplet {
 
     //PID controller var
     public static float avgTemp;
+
     private PController pController;
     private IController iController;
+    private DController dController;
+
     private PIDController pidController;
     public static float temp = 200;
     private float Kp;
@@ -87,6 +90,7 @@ public class Box2dPid extends PApplet {
             line(width / 2, height - t0, width, height - t0);
             x0 = width / 2;
             j = width / 2;
+
         }
         float temp = Box2dPid.avgTemp;
         stroke(0);
@@ -98,6 +102,8 @@ public class Box2dPid extends PApplet {
 
         fill(0);
         text(frameRate, 20, 20);
+
+        rect(width / 2, height - 100, 100, 10);
 
     }
 
@@ -129,6 +135,7 @@ public class Box2dPid extends PApplet {
 
         pController = new PController(temp);
         iController = new IController(temp);
+        dController = new DController(temp);
 
         avgTemp = 0;
 
@@ -155,18 +162,25 @@ public class Box2dPid extends PApplet {
 
     private void tempUp(Box box) {
         float t = box.getTemp();
+
         float P = pController.getY(t, Kp);
-        float I = iController.getY(t, Ki);
-        t = P + I;
+        float I = 4 * iController.getY(t, Ki);
+        float D = 4 * dController.getY(t, Kd);
+
+        t = P + I + D;
         fill(0);
         text("Ep = " + pController.getE(), 10, 40);
         text("Ei = " + iController.getE(), 10, 60);
+        text("Ed = " + dController.getE(), 10, 80);
 
-        text("P = " + P, 10, 80);
-        text("I = " + I, 10, 100);
+        text("P = " + P, 10, 100);
+        text("I = " + I, 10, 120);
+        text("D = " + D, 10, 140);
 
-        text("Kp = " + Kp, 10, 120);
-        text("Ki = " + Ki, 10, 140);
+        text("Kp = " + Kp, 10, 160);
+        text("Ki = " + Ki, 10, 180);
+        text("Kd = " + Kd, 10, 200);
+
 //        t = pController.getY(t);
 //        t = pidController.doPID((int) t);
         box.setTemp(t);
@@ -198,6 +212,10 @@ public class Box2dPid extends PApplet {
             Ki++;
         } else if (event.getKey() == '8') {
             Ki--;
+        } else if (event.getKey() == '5') {
+            Kd++;
+        } else if (event.getKey() == '6') {
+            Kd--;
         }
 
 
