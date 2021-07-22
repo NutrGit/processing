@@ -16,60 +16,50 @@ import KinectPV2.*;
 
 public class Kinect extends PApplet {
 
-    /*
-Thomas Sanchez Lengeling.
- http://codigogenerativo.com/
+    private KinectPV2 kinect;
 
- KinectPV2, Kinect for Windows v2 library for processing
+    private boolean saveVideo = false;
 
- How to record Point Cloud Data and store it in several obj files.
- Record with 'r'
- */
+    private PGL pgl;
+    private PShader sh;
 
-    KinectPV2 kinect;
+    private int vertLoc;
 
-    boolean saveVideo = false;
-
-    PGL pgl;
-    PShader sh;
-
-    int vertLoc;
-
-    float fov;
+    private float fov;
 
     //transformations
-    float a = 7;
-    int zval = -50;
-    float scaleVal = 220;
+    private float a = 7;
+    private int zval = -50;
+    private float scaleVal = 220;
 
     //Distance Threashold
-    int maxD = 4500; // 4.5 m
-    int minD = 0;  //  50 cm
+    private int maxD = 4500; // 4.5 m
+    private int minD = 0;  //  50 cm
 
-    float deltaX;
+    private float deltaX;
 
-    float w;
-    float h;
+    private float w;
+    private float h;
 
-    int numFrames = 30 * 20; // 30 frames  = 1s of recording
-    int frameCounter = 0; // frame counter
+    private int numFrames = 30 * 20; // 30 frames  = 1s of recording
+    private int frameCounter = 0; // frame counter
 
-    boolean recordFrame = false;  //recording flag
-    boolean doneRecording = false;
+    private boolean recordFrame = false;  //recording flag
+    private boolean doneRecording = false;
 
     //Array where all the frames are allocated
-    ArrayList<FrameBuffer> mFrames;
+    private ArrayList<FrameBuffer> mFrames;
 
     //VBO buffer location in the GPU
-    int vertexVboId;
+    private int vertexVboId;
 
-    float xScene, yScene;
+    private float xScene, yScene;
 
-    boolean isMovingMode;
+    private boolean isMovingMode;
 
-    FloatBuffer pointCloudBuffer;
+    private FloatBuffer pointCloudBuffer;
 
-    boolean isOrtho;
+    private boolean isOrtho;
 
     public void setup() {
 
@@ -201,7 +191,7 @@ Thomas Sanchez Lengeling.
     }
 
     //allocate all the frame in a temporary array
-    void allocateFrame(FloatBuffer buffer) {
+    private void allocateFrame(FloatBuffer buffer) {
         if (recordFrame) {
             if (frameCounter < numFrames) {
                 FrameBuffer frameBuffer = new FrameBuffer(buffer);
@@ -217,7 +207,7 @@ Thomas Sanchez Lengeling.
     }
 
     //Write all the frames recorded
-    void writeFrames() {
+    private void writeFrames() {
         if (doneRecording) {
             for (int i = 0; i < mFrames.size(); i++) {
                 FrameBuffer fBuffer = (FrameBuffer) mFrames.get(i);

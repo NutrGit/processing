@@ -8,7 +8,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 public class FrameBuffer extends PApplet {
-    String folderName;
+    private String folderName;
 
     {
         String dayStr = String.valueOf(PApplet.day());
@@ -18,25 +18,25 @@ public class FrameBuffer extends PApplet {
         folderName = monthStr + "_" + dayStr + "_" + hourStr + "_" + minuteStr + "_";
     }
 
-    FloatBuffer frame;
+    private FloatBuffer frame;
 
     private boolean isRunFile = false;
 
     //id of the frame
-    int frameId;
+    private int frameId;
 
-    FrameBuffer(FloatBuffer f) {
+    public FrameBuffer(FloatBuffer f) {
         frame = clone(f);
     }
 
-    void setFrameId(int fId) {
+    public void setFrameId(int fId) {
         frameId = fId;
     }
 
     /*
     Writing of the obj file,
      */
-    void saveTxtFrame() {
+    public void saveTxtFrame() {
         int vertData = 512 * 424;
         String[] points = new String[vertData];
         ArrayList<String> listPoints = new ArrayList<String>();
@@ -66,7 +66,7 @@ public class FrameBuffer extends PApplet {
         println("pointsArray.length = " + pointsArray.length);
     }
 
-    void saveOBJFrame() {
+    public void saveOBJFrame() {
         int vertData = 512 * 424;
         String[] points = new String[vertData];
 
