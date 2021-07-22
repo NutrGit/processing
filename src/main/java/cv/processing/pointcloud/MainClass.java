@@ -3,7 +3,6 @@ package cv.processing.pointcloud;
 public class MainClass {
 
     public static void main(String[] args) {
-
         PointCloud pointCloud = new PointCloud();
         pointCloud.main(pointCloud.getClass().getName());
 
