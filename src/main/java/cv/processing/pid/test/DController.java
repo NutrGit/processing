@@ -22,11 +22,11 @@ public class DController {
     public float getY(float t1, float kd) {
         e = t0 - t1;
         eList.add(e);
-        if (eList.size() > 50) {
+        if (eList.size() > 10) {
             eList.remove(eList.get(0));
         }
-        if (eList.size() == 50) {
-            y = (eList.get(49) - eList.get(1)) / 48;
+        if (eList.size() == 10) {
+            y = kd * (eList.get(9) - eList.get(1)) / 8;
         }
         return y;
     }

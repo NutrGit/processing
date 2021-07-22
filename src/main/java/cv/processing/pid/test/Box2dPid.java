@@ -103,7 +103,7 @@ public class Box2dPid extends PApplet {
         fill(0);
         text(frameRate, 20, 20);
 
-        rect(width / 2, height - 100, 100, 10);
+//        rect(width / 2, height - 100, 100, 10);
 
     }
 
@@ -114,18 +114,19 @@ public class Box2dPid extends PApplet {
 
     @Override
     public void setup() {
+//        textSize();
         surface.setResizable(true);
 
-        pidController = new PIDController((int) temp);
+//        pidController = new PIDController(200);
 
         Kp = 1;
         Ki = 1;
         Kd = 1;
 
-        pidController.setPIDParam(0, Kp); //P
-        pidController.setPIDParam(1, Ki); //I
-        pidController.setPIDParam(2, Kd); //D
-//        pidController.setPIDParam(3, 0); //power
+//        pidController.setPIDParam(0, Kp); //P
+//        pidController.setPIDParam(1, Ki); //I
+//        pidController.setPIDParam(2, Kd); //D
+//        pidController.setPIDParam(3, 1000); //power
 
         background(255);
         stroke(0, 0, 255, 100);
@@ -164,10 +165,11 @@ public class Box2dPid extends PApplet {
         float t = box.getTemp();
 
         float P = pController.getY(t, Kp);
-        float I = 4 * iController.getY(t, Ki);
-        float D = 4 * dController.getY(t, Kd);
+        float I = iController.getY(t, Ki);
+        float D = dController.getY(t, Kd);
 
         t = P + I + D;
+
         fill(0);
         text("Ep = " + pController.getE(), 10, 40);
         text("Ei = " + iController.getE(), 10, 60);
@@ -224,5 +226,6 @@ public class Box2dPid extends PApplet {
     public static void main(String[] args) {
         Box2dPid app = new Box2dPid();
         app.main(app.getClass().getName());
+//        List<String> linkedList = new LinkedList<>();
     }
 }

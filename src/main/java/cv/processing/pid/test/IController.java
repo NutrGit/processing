@@ -17,13 +17,11 @@ public class IController {
     }
 
     public float getY(float t1, float ki) {
-        y = t1 + getESum(t0 - t1, ki);
+        float e0 = t0 - t1;
+        float e1 = e;
+        e = ki * (e1 + e0);
+        y = t1 + e;
         return y;
-    }
-
-    private float getESum(float e0, float ki) {
-        e += ki * e0;
-        return e;
     }
 
     public float getE() {

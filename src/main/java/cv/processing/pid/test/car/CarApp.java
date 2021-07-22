@@ -30,8 +30,8 @@ public class CarApp extends PApplet {
 
         fill(0);
         line(t, 0, t, height);
+        car.attract(t);
         rotateWheelPImage();
-
         box2d.step();
 
         if (mousePressed) {
@@ -45,7 +45,8 @@ public class CarApp extends PApplet {
 
         info.updateText("wheel angle = " + wheelAngle +
                 "\n car angle = " + car.getBody().getAngle() +
-                "\n angular velosity = " + car.getBody().getAngularVelocity());
+                "\n angular velosity = " + car.getBody().getAngularVelocity() +
+                "\n t = " + t);
         info.draw();
 
         car.display();
@@ -61,7 +62,7 @@ public class CarApp extends PApplet {
 
         carBoundary = new CarBoundary(width / 2, height, width, 10, this);
 
-        car = new Car(width / 2, height - 200, this);
+        car = new Car(width / 3, height - 200, this);
 //        car2 = new Car(width / 3, height - 200, this);
 
 
@@ -102,6 +103,11 @@ public class CarApp extends PApplet {
         } else if (event.getKeyCode() == 40) {
             //DOWN
             moveBackward(0);
+        } else if (event.getKey() == ',') {
+            //<
+            t -= 50;
+        } else if (event.getKey() == '.') {
+            t += 50;
         }
 
 

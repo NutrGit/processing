@@ -15,8 +15,8 @@ public class PController {
     }
 
     public float getY(float t1, float kp) {
-        e = kp * (t0 - t1);
-        y = t1 + e;
+        e = t0 - t1;
+        y = t1 + kp * e;
         return y;
     }
 
