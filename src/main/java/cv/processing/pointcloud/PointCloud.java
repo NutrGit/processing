@@ -22,30 +22,25 @@ public class PointCloud extends PApplet {
     private PGL pgl;
     private PShader sh;
 
+    private FloatBuffer pointCloudBuffer;
+    private String resFolderName;
+    private String sketchPath;
+
     private int vertLoc;
-
     private int vertexVboId;
-
-    private float a = 7;
     private int zval = -50;
-    //float scaleVal = 220;
-    private float scaleVal = 480;
-
+    private int frameNumber = 0;
     //int vertData = 512*424*3;
     //int vertData = 119756*3; //count of points*3 by frame
     private int vertData = 217088 * 3;
     private List<Integer> vertDataList = new ArrayList();
-
-    private FloatBuffer pointCloudBuffer;
-
     private List<FloatBuffer> pointCloudList = new ArrayList();
-    private int frameNumber = 0;
 
-    private float xScene = width >> 1, yScene;
-
-    private String sketchPath;
+    private float a = 7;
+    private float scaleVal = 480;
 
     private boolean pause;
+    private float xScene = width >> 1, yScene;
     private float xCoordFrameBar;
     private float yCoordFrameBar;
     private float frameBarLength;
@@ -57,18 +52,13 @@ public class PointCloud extends PApplet {
 
     private float w;
     private float h;
-
-    private String resFolderName;
+    private float fov;
+    private int k = 1;
 
     private boolean isOrtho;
-
     private boolean isMovingMode;
-
     private boolean isShowUI;
 
-    private float fov;
-
-    private int k = 1;
 
     public void setup() {
 
