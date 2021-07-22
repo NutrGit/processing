@@ -1,5 +1,6 @@
 package cv.processing.pointcloud;
 
+import KinectPV2.KinectPV2;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
@@ -11,54 +12,36 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
-import KinectPV2.*;
-
 
 public class Kinect extends PApplet {
 
     private KinectPV2 kinect;
-
-    private boolean saveVideo = false;
-
     private PGL pgl;
     private PShader sh;
-
-    private int vertLoc;
-
-    private float fov;
-
-    //transformations
-    private float a = 7;
-    private int zval = -50;
-    private float scaleVal = 220;
-
-    //Distance Threashold
-    private int maxD = 4500; // 4.5 m
-    private int minD = 0;  //  50 cm
-
-    private float deltaX;
+    private ArrayList<FrameBuffer> mFrames;
+    private FloatBuffer pointCloudBuffer;
 
     private float w;
     private float h;
+    private float a = 7;
+    private float scaleVal = 220;
+    private float deltaX;
+    private float fov;
+    private float xScene, yScene;
+
+    private int zval = -50;
+    private int maxD = 4500; // 4.5 m
+    private int minD = 0;  //  50 cm
 
     private int numFrames = 30 * 20; // 30 frames  = 1s of recording
     private int frameCounter = 0; // frame counter
-
-    private boolean recordFrame = false;  //recording flag
-    private boolean doneRecording = false;
-
-    //Array where all the frames are allocated
-    private ArrayList<FrameBuffer> mFrames;
-
-    //VBO buffer location in the GPU
+    private int vertLoc;
     private int vertexVboId;
 
-    private float xScene, yScene;
-
+    private boolean saveVideo = false;
+    private boolean recordFrame = false;  //recording flag
+    private boolean doneRecording = false;
     private boolean isMovingMode;
-
-    private FloatBuffer pointCloudBuffer;
-
     private boolean isOrtho;
 
     public void setup() {
@@ -125,7 +108,7 @@ public class Kinect extends PApplet {
 
         //translate the scene to the center
         //translate(width / 2, height / 2, zval);
-        translate(xScene, yScene, zval*2);
+        translate(xScene, yScene, zval * 2);
         scale(scaleVal, -1 * scaleVal, scaleVal);
         //if (mousePressed) {
         //  a = (float)mouseX / (float)100;
@@ -185,7 +168,7 @@ public class Kinect extends PApplet {
         //stroke(255, 0, 0);
         //surface.setTitle("" + (int)frameRate + ", arrayList = " + mFrames.size()
         //  + ", vertData = " + vertData + ", a = " + a);
-        if(saveVideo){
+        if (saveVideo) {
             saveFrame();
         }
     }
@@ -288,7 +271,7 @@ public class Kinect extends PApplet {
             println("doneRecording = " + doneRecording);
         }
 
-        if(key == '7'){
+        if (key == '7') {
             saveVideo = true;
         }
 
